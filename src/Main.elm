@@ -36,46 +36,54 @@ initialModel =
 
 
 type Msg
-    = ToggleLocation String
+    = MoveTo String Location
 
 
 update : Msg -> Presents -> Presents
-update msg model =
+update msg presents =
     case msg of
-        ToggleLocation id ->
+        MoveTo presentId location ->
+            -- Update the location of the present with the given id
             let
-                updatePresent present =
-                    if present.id == id then
-                        case present.location of
-                            Workshop ->
-                                { present | location = Sleigh }
+                updatedPresents =
+                    List.map
+                        (\present ->
+                            if present.id == presentId then
+                                { present | location = location }
 
-                            Sleigh ->
-                                { present | location = Workshop }
-
-                    else
-                        present
+                            else
+                                present
+                        )
+                        presents
             in
-            List.map updatePresent model
+            updatedPresents
 
 
 
 -- View
 
 
-renderPresent : String -> Html.Html Msg
-renderPresent presentId =
+renderPresent : Present -> Html.Html Msg
+renderPresent present =
     button
-        [ id presentId
+        [ id present.id
         , class "present"
-        , onClick (ToggleLocation presentId)
+        , onClick
+            (MoveTo present.id
+                (if present.location == Sleigh then
+                    Workshop
+
+                 else
+                    Sleigh
+                )
+            )
         ]
         []
 
 
 renderPresents : Presents -> Location -> List (Html.Html Msg)
 renderPresents presents locationFilter =
-    List.map (\p -> renderPresent p.id)
+    List.map (\p -> renderPresent p)
         (List.filter (\p -> p.location == locationFilter) presents)
 
 
