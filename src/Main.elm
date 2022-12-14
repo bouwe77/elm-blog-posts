@@ -7,6 +7,19 @@ import Html.Events exposing (onClick)
 
 
 
+-- Main
+
+
+main : Program () Presents Msg
+main =
+    Browser.sandbox
+        { init = initialModel
+        , view = view
+        , update = update
+        }
+
+
+
 -- Model
 
 
@@ -43,20 +56,15 @@ update : Msg -> Presents -> Presents
 update msg presents =
     case msg of
         MoveTo presentId location ->
-            -- Update the location of the present with the given id
-            let
-                updatedPresents =
-                    List.map
-                        (\present ->
-                            if present.id == presentId then
-                                { present | location = location }
+            List.map
+                (\present ->
+                    if present.id == presentId then
+                        { present | location = location }
 
-                            else
-                                present
-                        )
-                        presents
-            in
-            updatedPresents
+                    else
+                        present
+                )
+                presents
 
 
 
@@ -83,8 +91,7 @@ renderPresent present =
 
 renderPresents : Presents -> Location -> List (Html.Html Msg)
 renderPresents presents locationFilter =
-    List.map (\p -> renderPresent p)
-        (List.filter (\p -> p.location == locationFilter) presents)
+    List.map renderPresent (List.filter (\p -> p.location == locationFilter) presents)
 
 
 view : Presents -> Html.Html Msg
@@ -96,12 +103,3 @@ view model =
             , div [ class "sleigh" ] (renderPresents model Sleigh)
             ]
         ]
-
-
-main : Program () Presents Msg
-main =
-    Browser.sandbox
-        { init = initialModel
-        , view = view
-        , update = update
-        }
