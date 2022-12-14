@@ -1,105 +1,55 @@
-module Main exposing (main)
+module Main exposing (..)
 
-import Browser
-import Html exposing (button, div, h1, text)
-import Html.Attributes exposing (class, id)
-import Html.Events exposing (onClick)
+import Html exposing (a, div, h1, li, p, text, ul)
+import Html.Attributes exposing (href)
 
 
-
--- Main
-
-
-main : Program () Presents Msg
+main : Html.Html msg
 main =
-    Browser.sandbox
-        { init = initialModel
-        , view = view
-        , update = update
-        }
+    view ""
 
 
-
--- Model
-
-
-type Location
-    = Workshop
-    | Sleigh
+type alias Item =
+    { title : String, demo : String, source : String, blog : String }
 
 
-type alias Present =
-    { id : String, location : Location }
-
-
-type alias Presents =
-    List Present
-
-
-initialModel : Presents
-initialModel =
-    [ { id = "present-1", location = Workshop }
-    , { id = "present-2", location = Workshop }
-    , { id = "present-3", location = Workshop }
+items : List Item
+items =
+    [ { title = "The language"
+      , demo = "/Blog1.elm"
+      , source = "https://github.com/bouwe77/elm-blog-posts/blob/main/src/Blog1.elm"
+      , blog = "https://bouwe.io/elm-baby-steps"
+      }
+    , { title = "Rendering HTML"
+      , demo = "/Blog2.elm"
+      , source = "https://github.com/bouwe77/elm-blog-posts/blob/main/src/Blog2.elm"
+      , blog = "https://bouwe.io/elm-rendering-html"
+      }
+    , { title = "User interaction"
+      , demo = "/Blog3.elm"
+      , source = "https://github.com/bouwe77/elm-blog-posts/blob/main/src/Blog3.elm"
+      , blog = "https://bouwe.io/elm-user-interaction"
+      }
     ]
 
 
-
--- Update
-
-
-type Msg
-    = MoveTo String Location
-
-
-update : Msg -> Presents -> Presents
-update msg presents =
-    case msg of
-        MoveTo presentId location ->
-            List.map
-                (\present ->
-                    if present.id == presentId then
-                        { present | location = location }
-
-                    else
-                        present
-                )
-                presents
-
-
-
--- View
-
-
-renderPresent : Present -> Html.Html Msg
-renderPresent present =
-    button
-        [ id present.id
-        , class "present"
-        , onClick
-            (MoveTo present.id
-                (if present.location == Sleigh then
-                    Workshop
-
-                 else
-                    Sleigh
-                )
-            )
-        ]
-        []
-
-
-renderPresents : Presents -> Location -> List (Html.Html Msg)
-renderPresents presents locationFilter =
-    List.map renderPresent (List.filter (\p -> p.location == locationFilter) presents)
-
-
-view : Presents -> Html.Html Msg
-view model =
-    div []
-        [ h1 [] [ text "Let's Help Santa! 🎅🏻🙏🏻" ]
-        , div [ class "container" ]
-            [ div [ class "workshop" ] (renderPresents model Workshop)
-            , div [ class "sleigh" ] (renderPresents model Sleigh)
+viewItem : Item -> Html.Html msg
+viewItem item =
+    p []
+        [ text item.title
+        , ul []
+            [ li [] [ a [ href item.demo ] [ text "demo" ] ]
+            , li [] [ a [ href item.source ] [ text "source code" ] ]
+            , li [] [ a [ href item.blog ] [ text "blog post" ] ]
             ]
+        ]
+
+
+view : String -> Html.Html msg
+view _ =
+    div []
+        [ h1 []
+            [ text "My Elm blog posts" ]
+        , div []
+            (List.map viewItem items)
         ]
