@@ -98,7 +98,7 @@ view : Presents -> Html.Html Msg
 view model =
     div []
         [ h1 [] [ text "Let's Help Santa! 🎅🏻🙏🏻" ]
-        , div [ class "container" ]
+        , div [ class "blog3-container" ]
             [ div [ class "workshop" ] (renderPresents model Workshop)
             , div [ class "sleigh" ] (renderPresents model Sleigh)
             ]

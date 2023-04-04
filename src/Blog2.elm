@@ -1,10 +1,11 @@
-module Blog2 exposing (main)
+module Blog2 exposing (view)
 
 import Html exposing (b, div, text)
 import Html.Attributes exposing (style)
 
 
-main =
+view : Html.Html msg
+view =
     div
         [ style "display" "grid"
         , style "place-items" "center"
