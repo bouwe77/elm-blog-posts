@@ -1,11 +1,12 @@
-module Blog2 exposing (view)
+--[Ellie Playground](https://ellie-app.com/mtvn5TcKNQBa1)
+
+module Main exposing (..)
 
 import Html exposing (b, div, text)
 import Html.Attributes exposing (style)
 
 
-view : Html.Html msg
-view =
+main =
     div
         [ style "display" "grid"
         , style "place-items" "center"

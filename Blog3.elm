@@ -1,22 +1,11 @@
-module Blog3 exposing (main)
+--[Ellie Playground](https://ellie-app.com/mtvpTKytF7pa1)
+
+module Blog3 exposing (..)
 
 import Browser
 import Html exposing (button, div, h1, text)
 import Html.Attributes exposing (class, id)
 import Html.Events exposing (onClick)
-
-
-
--- Main
-
-
-main : Program () Presents Msg
-main =
-    Browser.sandbox
-        { init = initialModel
-        , view = view
-        , update = update
-        }
 
 
 
@@ -32,11 +21,11 @@ type alias Present =
     { id : String, location : Location }
 
 
-type alias Presents =
+type alias Model =
     List Present
 
 
-initialModel : Presents
+initialModel : Model
 initialModel =
     [ { id = "present-1", location = Workshop }
     , { id = "present-2", location = Workshop }
@@ -52,7 +41,7 @@ type Msg
     = MoveTo String Location
 
 
-update : Msg -> Presents -> Presents
+update : Msg -> Model -> Model
 update msg presents =
     case msg of
         MoveTo presentId location ->
@@ -89,12 +78,12 @@ renderPresent present =
         []
 
 
-renderPresents : Presents -> Location -> List (Html.Html Msg)
+renderPresents : Model -> Location -> List (Html.Html Msg)
 renderPresents presents locationFilter =
     List.map renderPresent (List.filter (\p -> p.location == locationFilter) presents)
 
 
-view : Presents -> Html.Html Msg
+view : Model -> Html.Html Msg
 view model =
     div []
         [ h1 [] [ text "Let's Help Santa! 🎅🏻🙏🏻" ]
@@ -103,3 +92,16 @@ view model =
             , div [ class "sleigh" ] (renderPresents model Sleigh)
             ]
         ]
+
+
+
+-- Main
+
+
+main : Program () Model Msg
+main =
+    Browser.sandbox
+        { init = initialModel
+        , view = view
+        , update = update
+        }

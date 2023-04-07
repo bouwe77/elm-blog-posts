@@ -1,4 +1,4 @@
-module Blog4 exposing (..)
+module Main exposing (..)
 
 import Browser
 import Html exposing (Html, button, div, h1, text)

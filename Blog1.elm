@@ -1,4 +1,6 @@
-module Blog1 exposing (view)
+-- [Ellie Playground](https://ellie-app.com/mtvhHKNVxhTa1)
+
+module Main exposing (..)
 
 import Html exposing (div, text)
 
@@ -19,6 +21,5 @@ result =
         |> String.fromInt
 
 
-view : Html.Html msg
-view =
+main =
     div [] [ text result ]
